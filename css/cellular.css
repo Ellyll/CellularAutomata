@@ -1,0 +1,17 @@
+body {
+    color: #FFF;
+    background-color: #000;
+    margin: 0;
+}
+div {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+canvas {
+    margin: auto;
+}
+.menu {
+    display: none;
+}

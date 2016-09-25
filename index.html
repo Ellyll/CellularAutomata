@@ -1,31 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8"/>
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-        <style>
-            body {
-                color: #FFF;
-                background-color: #000;
-                margin: 0;
-            }
-
-            div {
-                display: flex;
-                align-items: center;
-                height: 100%;
-                width: 100%;
-            }
-
-            canvas {
-                margin: auto;
-            }
-        </style>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+        <link rel="stylesheet" href="css/cellular.css" />
+        <title>Cellular Automata</title>
     </head>
     <body>
         <div id="container">
             <canvas id="canvas" width="500" height="500"></canvas>
         </div>
-        <script src="cellular.js"></script>
+        <div class="menu">
+            <form>
+                <label id="ruleLabel" for="rule">Rule:</label>
+                <select id="rule" name="rule">
+                    <option value="73" selected="selected">73</option>
+                </select>
+            </form>
+        </div>
+        <script src="js/cellular.js"></script>
     </body>
 </html>
