@@ -127,8 +127,14 @@
         const qsInitialValue = params.get('initialValue');
         const initialRow = getRowFromQueryStringOrDefault(qsInitialValue, numberOfColumns, (n) => generateRow(n));
         const hex = convertRowToHex(initialRow);
-        $('#initialValue').val(hex);
-
+        const $initialValue = $('#initialValue');
+        $initialValue.val(hex);
+        $initialValue.change(function() {
+            const value = $(this).val();
+            const isEnabled = isValidInitialValue(numberOfColumns, value);
+            //console.log(new Date(), `goButton enabled=${isEnabled} value=${value}`);
+            $('#goButton').prop('disabled', !isEnabled);
+        });
 
         const rows = [];
         for (let r = 0; r < numberOfRows; r++) {
@@ -178,11 +184,11 @@
         mainLoop(null, 0);
 
         $(document).mousemove(function() {
-            console.log('moved', isMenuActive);
+            //console.log('moved', isMenuActive);
             const currentTime = performance.now();
             const elapsedTime = currentTime - lastMoveTime;
             if (!isMenuActive) {
-                console.log('activating menu');
+                //console.log('activating menu');
                 $('.menu').fadeIn();
                 isMenuActive = true;
             }
