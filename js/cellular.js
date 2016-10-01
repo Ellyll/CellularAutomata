@@ -57,10 +57,60 @@
             });
         });
 
-
         context.strokeStyle = '#FFF';
         context.fillStyle = '#FFF';
         activeCells.forEach(cell => context.fillRect(cell.x, cell.y, cellWidth, cellHeight));
+    }
+
+    function leftPad(padChar, str, length) {
+        const charsNeeded = length - str.length;
+        if (charsNeeded <= 0) return str;
+        let pad = '';
+        for (let i=0; i<charsNeeded; i++) {
+            pad += padChar;
+        }
+        return pad + str;
+    }
+
+    function convertRowToHex(row) {
+        const numberOfBytes = Math.ceil(row.length/8);
+        const rowString = leftPad('0', row.join(''), 8*numberOfBytes); // pad to make up to whole byte
+        const binaryStrings = [];
+        for (let i=0; i<rowString.length; i+=8) {
+            binaryStrings.push(rowString.substring(i, i+8));
+        }
+        let hexStrings = binaryStrings.map(bin => leftPad('0', parseInt(bin, 2).toString(16), 2));
+        return hexStrings.join('');
+    }
+
+    function convertHexToRow(hex, rowSize) {
+        const hexStrings = [];
+        for (let i=0; i<hex.length ; i+=2) {
+            const hexString = hex.substring(i,i+2);
+            hexStrings.push(hexString);
+        }
+        const binaryStrings = hexStrings.map(hex => leftPad('0', parseInt(hex, 16).toString(2), 8));
+        const binary = binaryStrings.join('');
+        return binary.substring(binary.length-rowSize, binary.length).split('');
+    }
+
+    function isValidInitialValue(numberOfColumns, hexValue) {
+        if (!hexValue) return false;
+
+        const numberOfHexDigits = Math.ceil(numberOfColumns/8)*2;
+        if (hexValue.length != numberOfHexDigits)
+            return false;
+
+        const reg = /^[a-f0-9]+$/;
+        return reg.test(hexValue);
+    }
+
+    function getRowFromQueryStringOrDefault(qsHexValue, numberOfColumns, generateRowFunc) {
+        if (qsHexValue != null && isValidInitialValue(numberOfColumns, qsHexValue))
+        {
+            return convertHexToRow(qsHexValue, numberOfColumns);
+        }
+        return generateRowFunc(numberOfColumns);
     }
 
     function main() {
@@ -73,16 +123,26 @@
         canvas.width = cellSize * numberOfColumns;
         canvas.height = cellSize * numberOfRows;
 
+        const params = new URLSearchParams(location.search.slice(1));
+        const qsInitialValue = params.get('initialValue');
+        const initialRow = getRowFromQueryStringOrDefault(qsInitialValue, numberOfColumns, (n) => generateRow(n));
+        const hex = convertRowToHex(initialRow);
+        $('#initialValue').val(hex);
+
+
         const rows = [];
         for (let r = 0; r < numberOfRows; r++) {
             let row;
             if (r === 0) {
-                row = generateRow(numberOfColumns); //[0,0,0,0,0,1,0,0,0,0,0]
+                row = initialRow;
             } else {
                 row = advanceRow(rows[r - 1]);
             }
             rows.push(row);
         }
+
+        let isMenuActive = false;
+        let lastMoveTime = performance.now();
 
         let timeStep = 100; // speed = 1 cell / second
         let lastTime = null;
@@ -90,6 +150,11 @@
         let counter = 0;
         let mainLoop = (currentTime, deltaTime) => {
             counter++;
+            if (isMenuActive && (currentTime - lastMoveTime)>2000) {
+                console.log('deactivating menu');
+                $('.menu').fadeOut();
+                isMenuActive = false;
+            }
             if (lastTime === null) {
                 rows.push(advanceRow(rows[rows.length-1]));
                 lastTime = currentTime;
@@ -102,6 +167,7 @@
             }
             let yOffSet = Math.floor(timeDiff*(cellSize/timeStep));
             draw(context, rows, cellSize, cellSize, yOffSet);
+
             lastTime = currentTime;
             if (counter < 1000) {
                 window.requestAnimationFrame( (t) => mainLoop(t, timeDiff));
@@ -110,6 +176,18 @@
             }
         };
         mainLoop(null, 0);
+
+        $(document).mousemove(function() {
+            console.log('moved', isMenuActive);
+            const currentTime = performance.now();
+            const elapsedTime = currentTime - lastMoveTime;
+            if (!isMenuActive) {
+                console.log('activating menu');
+                $('.menu').fadeIn();
+                isMenuActive = true;
+            }
+            lastMoveTime = currentTime;
+        });
     }
 
     $(document).ready(function() {
