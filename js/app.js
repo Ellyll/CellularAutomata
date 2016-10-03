@@ -22,6 +22,50 @@ function main() {
         $('#goButton').prop('disabled', !isEnabled);
     });
 
+    class Menu {
+        constructor($menuElement, isActive = false, lastTime = performance.now()) {
+            this._$menuElement = $menuElement;
+            this._isActive = isActive;
+            this._lastTime = lastTime;
+        }
+
+        activate(currentTime = performance.now()) {
+            if (!this._isActive) {
+                this._$menuElement.fadeIn();
+            }
+            return new Menu(this._$menuElement, true, currentTime);
+        }
+
+        deactivate(currentTime = performance.now()) {
+            if (this._isActive) {
+                this._$menuElement.fadeOut();
+            }
+            return new Menu(this._$menuElement, false, currentTime);
+        }
+
+        tick(currentTime = performance.now()) {
+            if (currentTime - this._lastTime > 5000) {
+                return this.deactivate(currentTime)
+            }
+            return new Menu(this._$menuElement, true, currentTime);
+        }
+    }
+
+    let isMenuActive = false;
+    let lastMoveTime = performance.now();
+    $(document).mousemove(function() {
+        //console.log('moved', isMenuActive);
+        const currentTime = performance.now();
+        const elapsedTime = currentTime - lastMoveTime;
+        if (!isMenuActive) {
+            //console.log('activating menu');
+            $('.menu').fadeIn();
+            isMenuActive = true;
+        }
+        lastMoveTime = currentTime;
+    });
+
+
     const rows = [];
     for (let r = 0; r < numberOfRows; r++) {
         let row;
@@ -33,8 +77,7 @@ function main() {
         rows.push(row);
     }
 
-    let isMenuActive = false;
-    let lastMoveTime = performance.now();
+
 
     let timeStep = 100; // speed = 1 cell / second
     let lastTime = null;
@@ -69,17 +112,6 @@ function main() {
     };
     mainLoop(null, 0);
 
-    $(document).mousemove(function() {
-        //console.log('moved', isMenuActive);
-        const currentTime = performance.now();
-        const elapsedTime = currentTime - lastMoveTime;
-        if (!isMenuActive) {
-            //console.log('activating menu');
-            $('.menu').fadeIn();
-            isMenuActive = true;
-        }
-        lastMoveTime = currentTime;
-    });
 }
 
 $(document).ready(function() {
