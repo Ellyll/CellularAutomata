@@ -1,18 +1,25 @@
 const cellular = (function() {
 
-    // Rule 73: http://atlas.wolfram.com/01/01/73/
-    const rules = [
-        [[1, 1, 1], 0],
-        [[1, 1, 0], 1],
-        [[1, 0, 1], 0],
-        [[1, 0, 0], 0],
-        [[0, 1, 1], 1],
-        [[0, 1, 0], 0],
-        [[0, 0, 1], 0],
-        [[0, 0, 0], 1]
+    const _rules = [
+        {
+            id: 73,
+            type: '1d',
+            uri: 'http://atlas.wolfram.com/01/01/73/',
+            properties: [
+                // [ left, middle, right ], new value
+                [[1, 1, 1], 0],
+                [[1, 1, 0], 1],
+                [[1, 0, 1], 0],
+                [[1, 0, 0], 0],
+                [[0, 1, 1], 1],
+                [[0, 1, 0], 0],
+                [[0, 0, 1], 0],
+                [[0, 0, 0], 1]
+            ]
+        }
     ];
 
-    function generateRow(numberOfColumns) {
+    function generateRandomRow(numberOfColumns) {
         const row = new Array(numberOfColumns);
         for (let i = 0; i < numberOfColumns; i++) {
             row[i] = Math.round(Math.random());
@@ -20,29 +27,38 @@ const cellular = (function() {
         return row;
     }
 
-    function applyRules(previousRow, column) {
+    function applyRules(rule, previousRow, column) {
         const left = (column === 0) ? previousRow[previousRow.length - 1] : previousRow[column - 1];
-        const above = previousRow[column];
+        const middle = previousRow[column];
         const right = (column >= previousRow.length - 1) ? previousRow[0] : previousRow[column + 1];
 
-        const block = [left, above, right];
+        const block = [left, middle, right];
 
-        // find the rule that matches block and get the new value
-        return rules.find(rule => {
-            return rule[0].every((c, i) => c == block[i])
+        // find the rule property that matches block and get the new value
+        return rule.properties.find(property => {
+            return property[0].every((c, i) => c == block[i])
         })[1];
     }
 
-    function advanceRow(previousRow) {
+    function getRuleById(ruleId) {
+        const rule = _rules.find(r => r.id === ruleId);
+        if (typeof rule === 'undefined') {
+            throw new Error(`rule not found with id: ${ruleId}`);
+        }
+        return rule;
+    }
+
+    function advanceRow(ruleId, previousRow) {
+        const rule = getRuleById(ruleId);
         return previousRow.map((c, i) => {
-            return applyRules(previousRow, i);
+            return applyRules(rule, previousRow, i);
         });
     }
 
-    function draw(context, rows, cellWidth, cellHeight, yOffSet) {
+    function draw(context, rows, cellWidth, cellHeight, yOffSet, backgroundColour = '#000', cellColour = '#FFF') {
         context.strokeWidth = 0;
 
-        context.fillStyle = '#000';
+        context.fillStyle = backgroundColour;
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
         const activeCells = [];
@@ -58,8 +74,8 @@ const cellular = (function() {
             });
         });
 
-        context.strokeStyle = '#FFF';
-        context.fillStyle = '#FFF';
+        context.strokeStyle = cellColour;
+        context.fillStyle = cellColour;
         activeCells.forEach(cell => context.fillRect(cell.x, cell.y, cellWidth, cellHeight));
     }
 
@@ -95,6 +111,12 @@ const cellular = (function() {
         return binary.substring(binary.length-rowSize, binary.length).split('');
     }
 
+    function isValidRuleId(ruleId) {
+        if (!ruleId) return false;
+
+        return ruleId === 73;
+    }
+
     function isValidInitialValue(numberOfColumns, hexValue) {
         if (!hexValue) return false;
 
@@ -114,5 +136,44 @@ const cellular = (function() {
         return generateRowFunc(numberOfColumns);
     }
 
-    return { generateRow, applyRules, advanceRow, draw, convertRowToHex, convertHexToRow, isValidInitialValue, getRowFromQueryStringOrDefault };
+    function getInitialisedRows(ruleId, initialHexValue, numberOfColumns, numberOfRows) {
+
+        // Validate
+        if (typeof numberOfColumns !== 'number') {
+            throw new TypeError(`NumberOfColumns must be a number, but is of type ${typeof numberOfColumns}`);
+        }
+        if (numberOfColumns <= 0) {
+            throw new RangeError('NumberOfColumns must be greater than zero');
+        }
+        if (typeof numberOfRows !== 'number') {
+            throw new TypeError(`NumberOfRows must be a number, but is of type ${typeof numberOfRows}`);
+        }
+        if (numberOfRows <= 0) {
+            throw new RangeError('NumberOfRows must be greater than zero');
+        }
+        if (!cellular.isValidRuleId(ruleId)) {
+            throw new Error('Invalid rule id');
+        }
+        if (!cellular.isValidInitialValue(numberOfColumns, initialHexValue)) {
+            throw new Error('Invalid initial hex value');
+        }
+
+        // Create rows
+        const rows = [];
+        for (let r = 0; r < numberOfRows; r++) {
+            let row;
+            if (r === 0) {
+                // First row - created from initial hex value
+                row = convertHexToRow(initialHexValue, numberOfColumns);
+            } else {
+                // Not first, so generate this row from the previous one
+                row = advanceRow(ruleId, rows[r - 1]);
+            }
+            rows.push(row);
+        }
+
+        return rows;
+    }
+
+    return { generateRandomRow, applyRules, advanceRow, draw, convertRowToHex, convertHexToRow, isValidRuleId, isValidInitialValue, getRowFromQueryStringOrDefault, getInitialisedRows };
 })();
