@@ -57,6 +57,14 @@ function main() {
             this.tick();
         }
 
+        getInitialRuleId() {
+            return this._initialRuleId;
+        }
+
+        getInitialHexValue() {
+            return this._initialHexValue;
+        }
+
         resize() {
             this._cellSize = Math.floor(this._window.innerWidth / this._numberOfColumns);
             this._numberOfRows = Math.floor(this._window.innerHeight / this._cellSize);
@@ -66,6 +74,20 @@ function main() {
 
         draw() {
             cellular.draw(this._context, this._rows, this._cellSize, this._cellSize, Math.floor(this._yOffset), this._backgroundColour, this._cellColour);
+        }
+
+        setToRandom() {
+            this._running = false;
+            this._lastTime = undefined;
+            const rules = cellular.getRules();
+            this._initialRuleId = rules[Math.floor(Math.random() * rules.length)].id;
+            const row = cellular.generateRandomRow(this._numberOfColumns);
+            this._initialHexValue = cellular.convertRowToHex(row);
+            this._rows = cellular.getInitialisedRows(this._initialRuleId, this._initialHexValue, this._numberOfColumns, this._numberOfRows);
+            this._running = false;
+            this._firstTime = true;
+            this._yOffset = 0;
+            this.draw();
         }
 
         start() {
@@ -130,12 +152,13 @@ function main() {
 
     $('#btnPlay').on('click', function (evt) { app.start(); evt.preventDefault(); });
     $('#btnPause').on('click', function (evt) { app.stop(); evt.preventDefault(); });
+    //$('#btnRandom').on('click', function (evt) { app.setToRandom(); evt.preventDefault(); });
     // TODO: handler for random
-    // $('#btnRandom').on('click', function (evt) {
-    //     app.SetToRandom();
-    //     $initialValue.val(app.getInitialHexValue());
-    //     evt.preventDefault();
-    // });
+    $('#btnRandom').on('click', function (evt) {
+        app.setToRandom();
+        $initialValue.val(app.getInitialHexValue());
+        evt.preventDefault();
+    });
 }
 
 $(document).ready(function() {

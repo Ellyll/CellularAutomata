@@ -19,6 +19,10 @@ const cellular = (function() {
         }
     ];
 
+    function getRules() {
+        return _rules;
+    }
+
     function generateRandomRow(numberOfColumns) {
         const row = new Array(numberOfColumns);
         for (let i = 0; i < numberOfColumns; i++) {
@@ -175,5 +179,17 @@ const cellular = (function() {
         return rows;
     }
 
-    return { generateRandomRow, applyRules, advanceRow, draw, convertRowToHex, convertHexToRow, isValidRuleId, isValidInitialValue, getRowFromQueryStringOrDefault, getInitialisedRows };
+    return {
+        generateRandomRow,
+        applyRules,
+        advanceRow,
+        draw,
+        convertRowToHex,
+        convertHexToRow,
+        getRules,
+        isValidRuleId,
+        isValidInitialValue,
+        getRowFromQueryStringOrDefault,
+        getInitialisedRows
+    };
 })();
