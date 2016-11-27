@@ -132,7 +132,6 @@ function main() {
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     const numberOfColumns = 100;
-    const initialRuleId = 73;
 
     const params = new URLSearchParams(location.search.slice(1));
     const qsInitialValue = params.get('initialValue');
@@ -157,7 +156,7 @@ function main() {
     });
 
     const menu = new Menu($('#menu'));
-    const app = new CellularApp(window, context, numberOfColumns, initialRuleId, hex, menu);
+    const app = new CellularApp(window, context, numberOfColumns, ruleId, hex, menu);
 
     $('#btnPlay').on('click', function (evt) { app.start(); evt.preventDefault(); });
     $('#btnPause').on('click', function (evt) { app.stop(); evt.preventDefault(); });

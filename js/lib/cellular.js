@@ -134,7 +134,7 @@ const cellular = (function() {
     function isValidRuleId(ruleId) {
         if (!ruleId) return false;
 
-        return ruleId === 73;
+        return _rules.some(rule => rule.id === ruleId);
     }
 
     function isValidInitialValue(numberOfColumns, hexValue) {
