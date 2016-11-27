@@ -2,6 +2,22 @@ const cellular = (function() {
 
     const _rules = [
         {
+            id: 72,
+            type: '1d',
+            uri: 'http://atlas.wolfram.com/01/01/72/',
+            properties: [
+                // [ left, middle, right ], new value
+                [[1, 1, 1], 0],
+                [[1, 1, 0], 1],
+                [[1, 0, 1], 0],
+                [[1, 0, 0], 0],
+                [[0, 1, 1], 1],
+                [[0, 1, 0], 0],
+                [[0, 0, 1], 0],
+                [[0, 0, 0], 0]
+            ]
+        },
+        {
             id: 73,
             type: '1d',
             uri: 'http://atlas.wolfram.com/01/01/73/',
@@ -140,6 +156,13 @@ const cellular = (function() {
         return generateRowFunc(numberOfColumns);
     }
 
+    function getRuleIdFromQueryStringOrDefault(qsRuleId, getRuleIdFunc) {
+        if (qsRuleId != null && isValidRuleId(parseInt(qsRuleId))) {
+            return parseInt(qsRuleId);
+        }
+        return getRuleIdFunc(_rules);
+    }
+
     function getInitialisedRows(ruleId, initialHexValue, numberOfColumns, numberOfRows) {
 
         // Validate
@@ -190,6 +213,7 @@ const cellular = (function() {
         isValidRuleId,
         isValidInitialValue,
         getRowFromQueryStringOrDefault,
+        getRuleIdFromQueryStringOrDefault,
         getInitialisedRows
     };
 })();

@@ -136,6 +136,7 @@ function main() {
 
     const params = new URLSearchParams(location.search.slice(1));
     const qsInitialValue = params.get('initialValue');
+    const qsRule = params.get('rule');
     const initialRow = cellular.getRowFromQueryStringOrDefault(qsInitialValue, numberOfColumns, (n) => cellular.generateRandomRow(n));
     const hex = cellular.convertRowToHex(initialRow);
     const $initialValue = $('#initialValue');
@@ -146,17 +147,24 @@ function main() {
         //console.log(new Date(), `goButton enabled=${isEnabled} value=${value}`);
         $('#goButton').prop('disabled', !isEnabled);
     });
+    const $rule = $('#rule');
+    const rules = cellular.getRules();
+    const ruleId = cellular.getRuleIdFromQueryStringOrDefault(qsRule, (rules) => rules[0].id);
+    $.each(rules, function(index, rule) {
+        const obj = { value: rule.id, text: rule.id };
+        if (rule.id === ruleId) obj.selected = 'selected';
+        $rule.append($('<option />', obj));
+    });
 
     const menu = new Menu($('#menu'));
     const app = new CellularApp(window, context, numberOfColumns, initialRuleId, hex, menu);
 
     $('#btnPlay').on('click', function (evt) { app.start(); evt.preventDefault(); });
     $('#btnPause').on('click', function (evt) { app.stop(); evt.preventDefault(); });
-    //$('#btnRandom').on('click', function (evt) { app.setToRandom(); evt.preventDefault(); });
-    // TODO: handler for random
     $('#btnRandom').on('click', function (evt) {
         app.setToRandom();
         $initialValue.val(app.getInitialHexValue());
+        $rule.val(app.getInitialRuleId());
         evt.preventDefault();
     });
 }
