@@ -2,6 +2,54 @@ const cellular = (function() {
 
     const _rules = [
         {
+            id: 1,
+            type: '1d',
+            uri: 'http://atlas.wolfram.com/01/01/1/',
+            properties: [
+                // [ left, middle, right ], new value
+                [[1, 1, 1], 0],
+                [[1, 1, 0], 0],
+                [[1, 0, 1], 0],
+                [[1, 0, 0], 0],
+                [[0, 1, 1], 0],
+                [[0, 1, 0], 0],
+                [[0, 0, 1], 0],
+                [[0, 0, 0], 1]
+            ]
+        },
+        {
+            id: 15,
+            type: '1d',
+            uri: 'http://atlas.wolfram.com/01/01/15/',
+            properties: [
+                // [ left, middle, right ], new value
+                [[1, 1, 1], 0],
+                [[1, 1, 0], 0],
+                [[1, 0, 1], 0],
+                [[1, 0, 0], 0],
+                [[0, 1, 1], 1],
+                [[0, 1, 0], 1],
+                [[0, 0, 1], 1],
+                [[0, 0, 0], 1]
+            ]
+        },
+        {
+            id: 18,
+            type: '1d',
+            uri: 'http://atlas.wolfram.com/01/01/18/',
+            properties: [
+                // [ left, middle, right ], new value
+                [[1, 1, 1], 0],
+                [[1, 1, 0], 0],
+                [[1, 0, 1], 0],
+                [[1, 0, 0], 1],
+                [[0, 1, 1], 0],
+                [[0, 1, 0], 0],
+                [[0, 0, 1], 1],
+                [[0, 0, 0], 0]
+            ]
+        },
+        {
             id: 72,
             type: '1d',
             uri: 'http://atlas.wolfram.com/01/01/72/',
@@ -28,6 +76,22 @@ const cellular = (function() {
                 [[1, 0, 1], 0],
                 [[1, 0, 0], 0],
                 [[0, 1, 1], 1],
+                [[0, 1, 0], 0],
+                [[0, 0, 1], 0],
+                [[0, 0, 0], 1]
+            ]
+        },
+        {
+            id: 129,
+            type: '1d',
+            uri: 'http://atlas.wolfram.com/01/01/129/',
+            properties: [
+                // [ left, middle, right ], new value
+                [[1, 1, 1], 1],
+                [[1, 1, 0], 0],
+                [[1, 0, 1], 0],
+                [[1, 0, 0], 0],
+                [[0, 1, 1], 0],
                 [[0, 1, 0], 0],
                 [[0, 0, 1], 0],
                 [[0, 0, 0], 1]
