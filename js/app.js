@@ -41,13 +41,12 @@ function main() {
             this._backgroundColour = '#000';
             this._cellColour = '#FFF';
             this._menu = menu;
-
-            this.resize();
-            this._rows = cellular.getInitialisedRows(this._initialRuleId, this._initialHexValue, this._numberOfColumns, this._numberOfRows);
             this._running = false;
             this._firstTime = true;
             this._yOffset = 0;
-            this.draw();
+            this._rows = [];
+
+            this.resize();
 
             const that = this;
             $(document).on('mousemove', function() {
@@ -66,10 +65,18 @@ function main() {
         }
 
         resize() {
-            this._cellSize = Math.floor(this._window.innerWidth / this._numberOfColumns);
+            const newCellSize = Math.floor(this._window.innerWidth / this._numberOfColumns);
+            if (this._yOffset > 0) {
+                const oldCellSize = this._cellSize || newCellSize;
+                this._yOffset *= newCellSize/oldCellSize;
+            }
+            this._cellSize = newCellSize;
             this._numberOfRows = Math.floor(this._window.innerHeight / this._cellSize);
             this._context.canvas.width = this._cellSize * this._numberOfColumns;
             this._context.canvas.height = this._cellSize * this._numberOfRows;
+
+            this._rows = cellular.getInitialisedRows(this._initialRuleId, this._initialHexValue, this._numberOfColumns, this._numberOfRows);
+            this.draw();
         }
 
         draw() {
@@ -166,6 +173,7 @@ function main() {
         $rule.val(app.getInitialRuleId());
         evt.preventDefault();
     });
+    window.addEventListener('resize', (evt) => { app.resize(); });
 }
 
 $(document).ready(function() {
