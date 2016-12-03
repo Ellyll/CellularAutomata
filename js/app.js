@@ -75,7 +75,8 @@ function main() {
             this._context.canvas.width = this._cellSize * this._numberOfColumns;
             this._context.canvas.height = this._cellSize * this._numberOfRows;
 
-            this._rows = cellular.getInitialisedRows(this._initialRuleId, this._initialHexValue, this._numberOfColumns, this._numberOfRows);
+            const hexVal = (this._rows.length === 0) ? this._initialHexValue : cellular.convertRowToHex(this._rows[0]);
+            this._rows = cellular.getInitialisedRows(this._initialRuleId, hexVal, this._numberOfColumns, this._numberOfRows);
             this.draw();
         }
 
@@ -173,7 +174,7 @@ function main() {
         $rule.val(app.getInitialRuleId());
         evt.preventDefault();
     });
-    window.addEventListener('resize', (evt) => { app.resize(); });
+    window.addEventListener('resize', () => { app.resize(); });
 }
 
 $(document).ready(function() {
