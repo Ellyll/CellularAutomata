@@ -174,7 +174,34 @@ function main() {
         $rule.val(app.getInitialRuleId());
         evt.preventDefault();
     });
-    window.addEventListener('resize', () => { app.resize(); });
+
+    // Full screen
+    const $btnFullScreen = $('#btnFullScreen');
+    if (!fullscreen.isSupported()) {
+        $btnFullScreen.hide();
+        console.log('fullscreen not supported');
+    } else {
+        $btnFullScreen.on('click', function (evt) {
+            if (!fullscreen.isActive()) {
+                const body = document.getElementById('body');
+                fullscreen.request(body);
+            } else {
+                fullscreen.exit();
+            }
+            evt.preventDefault();
+        });
+        const handleFullScreenChange = () => {
+            const text = fullscreen.isActive() ? 'Exit full screen' : 'Full screen';
+            $btnFullScreen.html(text);
+        };
+        fullscreen.addEventListener(handleFullScreenChange);
+    }
+
+    // Window resizing
+    window.addEventListener('resize', () => {
+        app.resize();
+    });
+
 }
 
 $(document).ready(function() {
