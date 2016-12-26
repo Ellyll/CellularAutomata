@@ -64,6 +64,10 @@ function main() {
             return this._initialHexValue;
         }
 
+        getCurrentHexValue() {
+            return (this._rows.length === 0) ? this._initialHexValue : cellular.convertRowToHex(this._rows[0]);
+        }
+
         resize() {
             const newCellSize = Math.floor(this._window.innerWidth / this._numberOfColumns);
             if (this._yOffset > 0) {
@@ -135,6 +139,14 @@ function main() {
             const that = this;
             window.requestAnimationFrame(t => that.tick(t));
         }
+
+        saveImage() {
+            const dataURL = this._context.canvas.toDataURL();
+            const ruleId = this.getInitialRuleId();
+            const currentValue = this.getCurrentHexValue();
+            const fileName = `CellularAutomata_${ruleId}_${currentValue}.png`;
+            return { dataURL, fileName }
+        }
     }
 
     const canvas = document.getElementById('canvas');
@@ -173,6 +185,12 @@ function main() {
         $initialValue.val(app.getInitialHexValue());
         $rule.val(app.getInitialRuleId());
         evt.preventDefault();
+    });
+    $('#btnSave').on('click', function (evt) {
+        const saveButton = document.getElementById('btnSave');
+        const saveInfo = app.saveImage();
+        saveButton.href = saveInfo.dataURL;
+        saveButton.download = saveInfo.fileName;
     });
 
     // Full screen
