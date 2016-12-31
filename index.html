@@ -12,19 +12,21 @@
         </div>
         <div id="menu" class="menu">
             <form>
-                <!-- play pause save new-random new-enter-stuff about -->
-                <button id="btnPlay">Play</button>
-                <button id="btnPause">Pause</button>
-                <button id="btnRandom">Random</button>
-                <a id="btnSave" href="" href-lang="image/png" download="CellularAutomation.png" title="Save">Save</a>
-                <button id="btnFullScreen">Full screen</button>
-                <br />
-                <label id="ruleLabel" for="rule">Rule:</label>
-                <select id="rule" name="rule">
-                </select>
-                <label for="initialValue">Initial value:</label>
-                <input type="text" maxlength="26" id="initialValue" name="initialValue" />
-                <button id="goButton">Go</button>
+                <ul class="buttonRow">
+                    <li><a id="btnPlay" role="button">Play</a></li>
+                    <li><a id="btnPause">Pause</a></li>
+                    <li><a id="btnRandom">Random</a></li>
+                    <li><a id="btnSave" href="" href-lang="image/png" download="CellularAutomation.png" title="Save">Save</a></li>
+                    <li><a id="btnFullScreen">Full screen</a></li>
+                </ul>
+
+                <ul class="buttonRow">
+                    <li><label id="ruleLabel" for="rule">Rule:</label></li>
+                    <li><select id="rule" name="rule"></select></li>
+                    <li><label for="initialValue">Initial value:</label></li>
+                    <li><input type="text" maxlength="26" id="initialValue" name="initialValue" /></li>
+                    <li><button id="goButton">Go</button></li>
+                </ul>
             </form>
         </div>
         <script src="js/lib/jquery-3.1.1.min.js"></script>

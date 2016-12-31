@@ -14,6 +14,11 @@ canvas {
     margin: auto;
 }
 
+.clear {
+    clear: both;
+    margin-bottom: 2em;
+}
+
 .menu {
     display: none;
     position: absolute;
@@ -28,22 +33,52 @@ canvas {
     font-size: 1em;
 }
 
+.buttonRow {
+    list-style-type: none;
+    margin: 0 0 1em 0;
+    display: block;
+    float: left;
+    clear: left;
+    /*font-size: 12px;*/
+    /*line-height: 22px;*/
+    font-size: 1em;
+    line-height: 1.2em;
+}
+.buttonRow li {
+    display: block;
+    float: left;
+    height: 30px;
+    vertical-align: middle;
+}
+
+.buttonRow a {
+    text-decoration: none;
+}
+
 .menu button, .menu a {
+    font-family: Arial, Helvetica, sans-serif;
     color: #333;
-    background-color: #EEE;
-    background-image: linear-gradient(#fcfcfc, #eee);
+    background: #EEE linear-gradient(#fcfcfc, #eee);
     border: 1px solid #d5d5d5;
     border-radius: 3px;
-    font-size: 12px;
-    line-height: 1.5em;
+    /*font-size: 12px;*/
+    /*line-height: 22px;*/
+    font-size: 1em;
+    line-height: 1.2em;
     padding: 3px 10px;
-    font-weight: bold;
+    height: 30px;
+    font-weight: 600;
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;
     position: relative;
     display: inline-block;
     text-decoration: none;
+    text-align: center;
     box-sizing: border-box;
-    margin: 0;
+    margin: 0 0.25em 0 0.25em;
+    -moz-appearance: none;
+    -moz-user-select: none;
+    overflow-wrap: break-word;
 }
+
