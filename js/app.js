@@ -192,7 +192,7 @@ function main() {
 
     $('#btnPlay').on('click', function (evt) {
         app.start();
-        updateButtonStatus(); // TODO: use events
+        updateButtonStatus(); // TODO: use events?
         evt.preventDefault();
     });
     $('#btnPause').on('click', function (evt) {
@@ -215,12 +215,12 @@ function main() {
     });
 
     // Full screen
-    const $btnFullScreen = $('#btnFullScreen');
+    const $fullScreenButtons = $('#btnFullScreen, #btnExitFullScreen');
     if (!fullscreen.isSupported()) {
-        $btnFullScreen.hide();
+        $fullScreenButtons.hide();
         console.log('fullscreen not supported');
     } else {
-        $btnFullScreen.on('click', function (evt) {
+        $fullScreenButtons.on('click', function (evt) {
             if (!fullscreen.isActive()) {
                 const body = document.getElementById('body');
                 fullscreen.request(body);
@@ -230,8 +230,13 @@ function main() {
             evt.preventDefault();
         });
         const handleFullScreenChange = () => {
-            const text = fullscreen.isActive() ? 'Exit full screen' : 'Full screen';
-            $btnFullScreen.html(text);
+            const isFullscreenActive = fullscreen.isActive();
+            const enterFullscreenButton = $('#btnFullScreen');
+            const exitFullscreenButton = $('#btnExitFullScreen');
+            const showButton = isFullscreenActive ? exitFullscreenButton : enterFullscreenButton;
+            const hideButton = isFullscreenActive ? enterFullscreenButton : exitFullscreenButton;
+            showButton.show();
+            hideButton.hide();
         };
         fullscreen.addEventListener(handleFullScreenChange);
     }
