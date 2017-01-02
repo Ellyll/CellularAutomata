@@ -35,10 +35,11 @@ canvas {
 
 .buttonRow {
     list-style-type: none;
-    margin: 0 0 1em 0;
+    margin: 0;
     display: block;
     float: left;
     clear: left;
+    padding: 0;
 }
 
 .buttonRow li {
@@ -52,10 +53,8 @@ canvas {
 
 .menu button, .menu a {
     font-family: Arial, Helvetica, sans-serif;
-    color: #333;
-    background: #EEE linear-gradient(#fcfcfc, #eee);
-    border: 1px solid #d5d5d5;
-    border-radius: 1em;
+    color: #F4F4F4;
+    background-color: transparent;
     font-size: 1em;
     line-height: 1.2em;
     padding: 0.25em 0.5em;
@@ -71,5 +70,10 @@ canvas {
     -moz-appearance: none;
     -moz-user-select: none;
     overflow-wrap: break-word;
+}
+
+.menu a img {
+    vertical-align: middle;
+    height: 1.5em;
 }
 

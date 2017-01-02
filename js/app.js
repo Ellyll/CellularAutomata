@@ -163,7 +163,6 @@ function main() {
     $initialValue.change(function() {
         const value = $(this).val();
         const isEnabled = cellular.isValidInitialValue(numberOfColumns, value);
-        //console.log(new Date(), `goButton enabled=${isEnabled} value=${value}`);
         $('#goButton').prop('disabled', !isEnabled);
     });
     const $rule = $('#rule');
