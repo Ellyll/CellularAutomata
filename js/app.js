@@ -180,8 +180,10 @@ function main() {
 
     const menu = new Menu($('#menu'));
     const app = new CellularApp(window, context, numberOfColumns, ruleId, hex, menu);
+    window.history.pushState({}, document.title, `?rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
 
     const updateButtonStatus = () => {
+        window.history.replaceState({}, document.title, `?rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
         const playButton = $('#btnPlay');
         const pauseButton = $('#btnPause');
         const showButton = app.isRunning() ? pauseButton : playButton;
