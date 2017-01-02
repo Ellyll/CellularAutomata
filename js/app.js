@@ -68,6 +68,10 @@ function main() {
             return (this._rows.length === 0) ? this._initialHexValue : cellular.convertRowToHex(this._rows[0]);
         }
 
+        isRunning() {
+            return this._running;
+        }
+
         resize() {
             const newCellSize = Math.floor(this._window.innerWidth / this._numberOfColumns);
             if (this._yOffset > 0) {
@@ -177,12 +181,30 @@ function main() {
     const menu = new Menu($('#menu'));
     const app = new CellularApp(window, context, numberOfColumns, ruleId, hex, menu);
 
-    $('#btnPlay').on('click', function (evt) { app.start(); evt.preventDefault(); });
-    $('#btnPause').on('click', function (evt) { app.stop(); evt.preventDefault(); });
+    const updateButtonStatus = () => {
+        const playButton = $('#btnPlay');
+        const pauseButton = $('#btnPause');
+        const showButton = app.isRunning() ? pauseButton : playButton;
+        const hideButton = app.isRunning() ? playButton : pauseButton;
+        showButton.show();
+        hideButton.hide();
+    };
+
+    $('#btnPlay').on('click', function (evt) {
+        app.start();
+        updateButtonStatus(); // TODO: use events
+        evt.preventDefault();
+    });
+    $('#btnPause').on('click', function (evt) {
+        app.stop();
+        updateButtonStatus();
+        evt.preventDefault();
+    });
     $('#btnRandom').on('click', function (evt) {
         app.setToRandom();
         $initialValue.val(app.getInitialHexValue());
         $rule.val(app.getInitialRuleId());
+        updateButtonStatus();
         evt.preventDefault();
     });
     $('#btnSave').on('click', function (evt) {
