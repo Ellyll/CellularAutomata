@@ -1,5 +1,75 @@
 
 function main() {
+    class Localistation {
+
+        constructor() {
+
+            this._translations = [
+                {
+                    lang: 'en',
+                    texts: [
+                        {selector: '#btnPlay img', attribute: 'alt', value: 'Play'},
+                        {selector: '#btnPlay img', attribute: 'title', value: 'Play'},
+                        {selector: '#btnPause img', attribute: 'alt', value: 'Pause'},
+                        {selector: '#btnPause img', attribute: 'title', value: 'Pause'},
+                        {selector: '#btnRandom img', attribute: 'alt', value: 'Random'},
+                        {selector: '#btnRandom img', attribute: 'title', value: 'Refresh with a random automaton'},
+                        {selector: '#btnSave img', attribute: 'alt', value: 'Save'},
+                        {selector: '#btnSave img', attribute: 'title', value: 'Save the image'},
+                        {selector: '#btnFullScreen img', attribute: 'alt', value: 'Full screen'},
+                        {selector: '#btnFullScreen img', attribute: 'title', value: 'Display in full screen'},
+                        {selector: '#btnExitFullScreen img', attribute: 'alt', value: 'Exit full screen'},
+                        {selector: '#btnExitFullScreen img', attribute: 'title', value: 'Exit from full screen'}
+                    ]
+                },
+                {
+                    lang: 'cy',
+                    texts: [
+                        {selector: '#btnPlay img', attribute: 'alt', value: 'Chwarae'},
+                        {selector: '#btnPlay img', attribute: 'title', value: 'Chwarae'},
+                        {selector: '#btnPause img', attribute: 'alt', value: 'Aros'},
+                        {selector: '#btnPause img', attribute: 'title', value: 'Aros'},
+                        {selector: '#btnRandom img', attribute: 'alt', value: 'Ar hap'},
+                        {selector: '#btnRandom img', attribute: 'title', value: 'Cynhyrchu delwedd newydd gan ddefnyddio awtomaton ar hap' },
+                        {selector: '#btnSave img', attribute: 'alt', value: 'Arbed'},
+                        {selector: '#btnSave img', attribute: 'title', value: 'Arbed y ddelwedd'},
+                        {selector: '#btnFullScreen img', attribute: 'alt', value: 'Sgrin llawn'},
+                        {selector: '#btnFullScreen img', attribute: 'title', value: 'Dangos mewn sgrin llawn'},
+                        {selector: '#btnExitFullScreen img', attribute: 'alt', value: 'Gadael sgrin llawn'},
+                        {selector: '#btnExitFullScreen img', attribute: 'title', value: 'Gadael sgrin llawn'}
+                    ]
+                }
+            ];
+
+            this._validLanguages = this._translations.map(x => x.lang);
+        }
+
+        getValidLanguages() {
+            return this._validLanguages;
+        }
+
+        getDefaultLanguage() {
+            return this._validLanguages[0];
+        }
+
+        isValidLanguage(languageCode) {
+            if (typeof languageCode === 'undefined') return false;
+            return this._validLanguages.indexOf(languageCode) !== -1;
+        }
+
+        getValidLanguageOrDefault(languageCode) {
+            return this.isValidLanguage(languageCode) ? languageCode : this.getDefaultLanguage();
+        }
+
+        setLanguage(languageCode) {
+            const translation = this._translations.find(x => x.lang === languageCode) || this._translations[0];
+
+            translation.texts.forEach(t => {
+                $(t.selector).attr(t.attribute, t.value);
+            });
+        }
+    }
+
     class Menu {
         constructor($menuElement, isActive = false, lastTime = performance.now()) {
             this._$menuElement = $menuElement;
@@ -156,10 +226,12 @@ function main() {
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     const numberOfColumns = 100;
+    const localisation = new Localistation();
 
     const params = new URLSearchParams(location.search.slice(1));
     const qsInitialValue = params.get('initialValue');
     const qsRule = params.get('rule');
+    let lang = localisation.getValidLanguageOrDefault(params.get('lang'));
     const initialRow = cellular.getRowFromQueryStringOrDefault(qsInitialValue, numberOfColumns, (n) => cellular.generateRandomRow(n));
     const hex = cellular.convertRowToHex(initialRow);
     const $initialValue = $('#initialValue');
@@ -180,10 +252,11 @@ function main() {
 
     const menu = new Menu($('#menu'));
     const app = new CellularApp(window, context, numberOfColumns, ruleId, hex, menu);
-    window.history.pushState({}, document.title, `?rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
+    localisation.setLanguage(lang);
+    window.history.pushState({}, document.title, `?lang=${lang}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
 
     const updateButtonStatus = () => {
-        window.history.replaceState({}, document.title, `?rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
+        window.history.replaceState({}, document.title, `?lang=${lang}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
         const playButton = $('#btnPlay');
         const pauseButton = $('#btnPause');
         const showButton = app.isRunning() ? pauseButton : playButton;
