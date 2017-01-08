@@ -1,103 +1,30 @@
 const cellular = (function() {
-
-    const _rules = [
-        {
-            id: 1,
-            type: '1d',
-            uri: 'http://atlas.wolfram.com/01/01/1/',
-            properties: [
-                // [ left, middle, right ], new value
-                [[1, 1, 1], 0],
-                [[1, 1, 0], 0],
-                [[1, 0, 1], 0],
-                [[1, 0, 0], 0],
-                [[0, 1, 1], 0],
-                [[0, 1, 0], 0],
-                [[0, 0, 1], 0],
-                [[0, 0, 0], 1]
-            ]
-        },
-        {
-            id: 15,
-            type: '1d',
-            uri: 'http://atlas.wolfram.com/01/01/15/',
-            properties: [
-                // [ left, middle, right ], new value
-                [[1, 1, 1], 0],
-                [[1, 1, 0], 0],
-                [[1, 0, 1], 0],
-                [[1, 0, 0], 0],
-                [[0, 1, 1], 1],
-                [[0, 1, 0], 1],
-                [[0, 0, 1], 1],
-                [[0, 0, 0], 1]
-            ]
-        },
-        {
-            id: 18,
-            type: '1d',
-            uri: 'http://atlas.wolfram.com/01/01/18/',
-            properties: [
-                // [ left, middle, right ], new value
-                [[1, 1, 1], 0],
-                [[1, 1, 0], 0],
-                [[1, 0, 1], 0],
-                [[1, 0, 0], 1],
-                [[0, 1, 1], 0],
-                [[0, 1, 0], 0],
-                [[0, 0, 1], 1],
-                [[0, 0, 0], 0]
-            ]
-        },
-        {
-            id: 72,
-            type: '1d',
-            uri: 'http://atlas.wolfram.com/01/01/72/',
-            properties: [
-                // [ left, middle, right ], new value
-                [[1, 1, 1], 0],
-                [[1, 1, 0], 1],
-                [[1, 0, 1], 0],
-                [[1, 0, 0], 0],
-                [[0, 1, 1], 1],
-                [[0, 1, 0], 0],
-                [[0, 0, 1], 0],
-                [[0, 0, 0], 0]
-            ]
-        },
-        {
-            id: 73,
-            type: '1d',
-            uri: 'http://atlas.wolfram.com/01/01/73/',
-            properties: [
-                // [ left, middle, right ], new value
-                [[1, 1, 1], 0],
-                [[1, 1, 0], 1],
-                [[1, 0, 1], 0],
-                [[1, 0, 0], 0],
-                [[0, 1, 1], 1],
-                [[0, 1, 0], 0],
-                [[0, 0, 1], 0],
-                [[0, 0, 0], 1]
-            ]
-        },
-        {
-            id: 129,
-            type: '1d',
-            uri: 'http://atlas.wolfram.com/01/01/129/',
-            properties: [
-                // [ left, middle, right ], new value
-                [[1, 1, 1], 1],
-                [[1, 1, 0], 0],
-                [[1, 0, 1], 0],
-                [[1, 0, 0], 0],
-                [[0, 1, 1], 0],
-                [[0, 1, 0], 0],
-                [[0, 0, 1], 0],
-                [[0, 0, 0], 1]
-            ]
-        }
+    const inputs =[
+        [1, 1, 1],
+        [1, 1, 0],
+        [1, 0, 1],
+        [1, 0, 0],
+        [0, 1, 1],
+        [0, 1, 0],
+        [0, 0, 1],
+        [0, 0, 0]
     ];
+
+    const _rules = [];
+    for (let ruleId=1 ; ruleId<=255 ; ruleId++) {
+        const bin = ruleId.toString(2);
+        const padding = '00000000';
+        const outputs = (padding.substring(0, padding.length - bin.length) + bin).split('').map(x => parseInt(x));
+        console.log({bin, outputs });
+        const properties = outputs.map( (val, idx) => [ inputs[idx], outputs[idx] ] );
+        const rule = {
+            id: ruleId,
+            type: '1d',
+            uri: `http://atlas.wolfram.com/01/01/${ruleId}/`,
+            properties
+        };
+        _rules.push(rule);
+    }
 
     function getRules() {
         return _rules;
