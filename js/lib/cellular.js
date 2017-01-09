@@ -15,7 +15,6 @@ const cellular = (function() {
         const bin = ruleId.toString(2);
         const padding = '00000000';
         const outputs = (padding.substring(0, padding.length - bin.length) + bin).split('').map(x => parseInt(x));
-        console.log({bin, outputs });
         const properties = outputs.map( (val, idx) => [ inputs[idx], outputs[idx] ] );
         const rule = {
             id: ruleId,
