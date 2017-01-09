@@ -3,7 +3,7 @@ Web app for displaying one-dimensional cellular automata, lets you animate and a
 
 The rules are from [The Wolfram Atlas](http://atlas.wolfram.com/TOC/TOC_200.html)
 
-This was inspired by Irina Shestak [@_lrlna](https://twitter.com/_lrlna) and Mattias P Johansson [@mpjme](https://twitter.com/mpjme),
+This was created by [@Ellyll](https://twitter.com/Ellyll) who was inspired by Irina Shestak [@_lrlna](https://twitter.com/_lrlna) and Mattias P Johansson [@mpjme](https://twitter.com/mpjme),
 and their YouTube video [Cellular Automata - Pair Programming - FunFunFunction #49](https://www.youtube.com/watch?v=bc-fVdbjAwk&t=2603s)
 
 There are Twitter bots that post images on:
