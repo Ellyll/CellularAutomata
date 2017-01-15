@@ -81,3 +81,6 @@ canvas {
     display: none;
 }
 
+#btnPause img {
+    margin-top: 0.25em;
+}
