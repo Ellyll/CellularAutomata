@@ -7,6 +7,7 @@ function main() {
             this._translations = [
                 {
                     lang: 'en',
+                    languageName: 'English',
                     texts: [
                         {selector: '#btnPlay img', attribute: 'alt', value: 'Play'},
                         {selector: '#btnPlay img', attribute: 'title', value: 'Play'},
@@ -24,6 +25,7 @@ function main() {
                 },
                 {
                     lang: 'cy',
+                    languageName: 'Cymraeg',
                     texts: [
                         {selector: '#btnPlay img', attribute: 'alt', value: 'Chwarae'},
                         {selector: '#btnPlay img', attribute: 'title', value: 'Chwarae'},
@@ -66,6 +68,26 @@ function main() {
 
             translation.texts.forEach(t => {
                 $(t.selector).attr(t.attribute, t.value);
+            });
+
+            // Set alternate languages
+            $('link[rel="alternate"]').remove();
+            const url = document.location.toString();
+            const reg = /([&?]lang=)[a-zA-Z\-]+/;
+            this._translations.filter(t => t.lang !== languageCode).map(t => t.lang).forEach(lang => {
+                const langUrl = url.replace(reg, `$1${lang}`);
+                $('head').append(`<link rel="alternate" hreflang="${lang}" href="${langUrl}" />`);
+            });
+
+            // Set lang in html tag
+            $('html').attr('lang', languageCode);
+        }
+
+        setLanguageLinks() {
+            const $ul = $('ul.languageChoices');
+            $ul.empty();
+            this._translations.forEach(t => {
+                $ul.append($(`<li><a class="languageChoice" href="#" data-lang="${t.lang}">${t.languageName}</a></li>`));
             });
         }
     }
@@ -188,7 +210,6 @@ function main() {
         }
 
         tick(currentTime = performance.now()) {
-            //console.log('app tick');
             if (this._running) {
                 if (!this._lastTime) {
                     if (this._firstTime) {
@@ -253,6 +274,7 @@ function main() {
     const menu = new Menu($('#menu'));
     const app = new CellularApp(window, context, numberOfColumns, ruleId, hex, menu);
     localisation.setLanguage(lang);
+    localisation.setLanguageLinks();
     window.history.pushState({}, document.title, `?lang=${lang}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
 
     const updateButtonStatus = () => {
@@ -287,6 +309,13 @@ function main() {
         const saveInfo = app.saveImage();
         saveButton.href = saveInfo.dataURL;
         saveButton.download = saveInfo.fileName;
+    });
+    $('.languageChoice').on('click', function (evt) {
+        const langWanted = $(this).data('lang');
+        lang = localisation.getValidLanguageOrDefault(langWanted);
+        localisation.setLanguage(lang);
+        updateButtonStatus();
+        evt.preventDefault();
     });
 
     // Full screen

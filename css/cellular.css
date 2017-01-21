@@ -19,7 +19,7 @@ canvas {
     margin-bottom: 2em;
 }
 
-.menu {
+.menu, #languageMenu {
     display: none;
     position: absolute;
     right: 10px;
@@ -83,4 +83,8 @@ canvas {
 
 #btnPause img {
     margin-top: 0.25em;
+}
+
+#languageMenuHeading {
+    display: none;
 }
