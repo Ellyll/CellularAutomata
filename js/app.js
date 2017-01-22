@@ -278,7 +278,7 @@ function main() {
     });
     const $rule = $('#rule');
     const rules = cellular.getRules();
-    const ruleId = cellular.getRuleIdFromQueryStringOrDefault(qsRule, (rules) => rules[0].id);
+    const ruleId = cellular.getRuleIdFromQueryStringOrDefault(qsRule, (rules) => cellular.getRandomRule().id);
     $.each(rules, function(index, rule) {
         const obj = { value: rule.id, text: rule.id };
         if (rule.id === ruleId) obj.selected = 'selected';
@@ -300,6 +300,19 @@ function main() {
         showButton.show();
         hideButton.hide();
     };
+
+    // $('#btnGo').on('click', function (evt) {
+    //     const rule = $rule.val().trim();
+    //     if (cellular.isValidRuleId(rule)) {
+    //         app.setRule(rule);
+    //         $initialValue.val(app.getInitialHexValue());
+    //         $rule.val(app.getInitialRuleId());
+    //         updateButtonStatus();
+    //     } else {
+    //         alert('INVALID RULE');
+    //     }
+    //     evt.preventDefault();
+    // });
 
     $('#btnPlay').on('click', function (evt) {
         app.start();

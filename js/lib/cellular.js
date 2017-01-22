@@ -29,6 +29,17 @@ const cellular = (function() {
         return _rules;
     }
 
+    function getRandomRule() {
+        function getRandomIntInclusive(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        const i = getRandomIntInclusive(0, _rules.length);
+        return _rules[i];
+    }
+
     function generateRandomRow(numberOfColumns) {
         const row = new Array(numberOfColumns);
         for (let i = 0; i < numberOfColumns; i++) {
@@ -193,6 +204,7 @@ const cellular = (function() {
     }
 
     return {
+        getRandomRule,
         generateRandomRow,
         applyRules,
         advanceRow,
