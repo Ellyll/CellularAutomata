@@ -11,7 +11,7 @@ const cellular = (function() {
     ];
 
     const _rules = [];
-    for (let ruleId=1 ; ruleId<=255 ; ruleId++) {
+    for (let ruleId=0 ; ruleId<=255 ; ruleId++) {
         const bin = ruleId.toString(2);
         const padding = '00000000';
         const outputs = (padding.substring(0, padding.length - bin.length) + bin).split('').map(x => parseInt(x));
@@ -118,11 +118,11 @@ const cellular = (function() {
         }
         const binaryStrings = hexStrings.map(hex => _leftPad('0', parseInt(hex, 16).toString(2), 8));
         const binary = binaryStrings.join('');
-        return binary.substring(binary.length-rowSize, binary.length).split('');
+        return binary.substring(binary.length-rowSize, binary.length).split('').map(c => parseInt(c));
     }
 
     function isValidRuleId(ruleId) {
-        if (!ruleId) return false;
+        if (typeof ruleId === 'undefined') return false;
 
         return _rules.some(rule => rule.id === ruleId);
     }
