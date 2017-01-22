@@ -12,32 +12,35 @@
             <canvas id="canvas" width="500" height="500"></canvas>
         </div>
         <div id="menu" class="menu">
-            <form>
-                <ul class="buttonRow">
-                    <!-- icons based on those from Geomicons http://geomicons.com/ https://github.com/jxnblk/geomicons-open/tree/master/dist/icons -->
-                    <li><a id="btnPlay" role="button"><img src="img/play_light.svg" alt="Play" title="Play" /></a></li>
-                    <li><a id="btnPause" role="button"><img src="img/pause_light.svg" alt="Pause" title="Pause" /></a></li>
-                    <li><a id="btnRandom" role="button"><img src="img/refresh_light.svg" alt="Random" title="Refresh with a random automaton" /></a></li>
-                    <li><a id="btnSave" href="" href-lang="image/png" download="CellularAutomaton.png" title="Save"><img src="img/save_light.svg" alt="Save" title="Save the image" /></a></li>
-                    <li><a id="btnFullScreen"><img src="img/fullscreen_light.svg" alt="Full screen" title="Display in full screen" /></a></li>
-                    <li><a id="btnExitFullScreen"><img src="img/exitFullscreen_light.svg" alt="Exit full screen" title="Exit from full screen" /></a></li>
-                </ul>
+            <div id="mainMenu">
+                <form>
+                    <ul class="buttonRow">
+                        <!-- icons based on those from Geomicons http://geomicons.com/ https://github.com/jxnblk/geomicons-open/tree/master/dist/icons -->
+                        <li><a id="btnPlay" role="button"><img src="img/play_light.svg" alt="Play" title="Play" /></a></li>
+                        <li><a id="btnPause" role="button"><img src="img/pause_light.svg" alt="Pause" title="Pause" /></a></li>
+                        <li><a id="btnRandom" role="button"><img src="img/refresh_light.svg" alt="Random" title="Refresh with a random automaton" /></a></li>
+                        <li><a id="btnSave" href="" href-lang="image/png" download="CellularAutomaton.png" title="Save"><img src="img/save_light.svg" alt="Save" title="Save the image" /></a></li>
+                        <li><a id="btnLanguage" role="button"><img src="img/languageIcon_light.svg" height="32" width="32" alt="Change language" title="Change language"></a></li>
+                        <li><a id="btnFullScreen"><img src="img/fullscreen_light.svg" alt="Full screen" title="Display in full screen" /></a></li>
+                        <li><a id="btnExitFullScreen"><img src="img/exitFullscreen_light.svg" alt="Exit full screen" title="Exit from full screen" /></a></li>
+                    </ul>
 
-                <!--
-                <ul class="buttonRow">
-                    <li><label id="ruleLabel" for="rule">Rule:</label></li>
-                    <li><select id="rule" name="rule"></select></li>
-                    <li><label for="initialValue">Initial value:</label></li>
-                    <li><input type="text" maxlength="26" id="initialValue" name="initialValue" /></li>
-                    <li><button id="goButton">Go</button></li>
+                    <!--
+                    <ul class="buttonRow">
+                        <li><label id="ruleLabel" for="rule">Rule:</label></li>
+                        <li><select id="rule" name="rule"></select></li>
+                        <li><label for="initialValue">Initial value:</label></li>
+                        <li><input type="text" maxlength="26" id="initialValue" name="initialValue" /></li>
+                        <li><button id="goButton">Go</button></li>
+                    </ul>
+                    -->
+                </form>
+            </div>
+            <div id="languageMenu" style="display: none">
+                <a class="btnBack"><img src="img/chevronLeft_light.svg" alt="Back" title="Back to the main menu" /><h2 id="languageMenuHeading">Languages</h2></a>
+                <ul class="languageChoices">
                 </ul>
-                -->
-            </form>
-        </div>
-        <div id="languageMenu" role="dialog" aria-labelledby="languageMenuHeading" style="display: none">
-            <h2 id="languageMenuHeading">Choose language</h2>
-            <ul class="languageChoices">
-            </ul>
+            </div>
         </div>
         <script src="js/lib/jquery-3.1.1.min.js"></script>
         <script src="js/lib/cellular.js"></script>

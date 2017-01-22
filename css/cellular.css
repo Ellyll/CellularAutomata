@@ -19,7 +19,7 @@ canvas {
     margin-bottom: 2em;
 }
 
-.menu, #languageMenu {
+.menu {
     display: none;
     position: absolute;
     right: 10px;
@@ -85,6 +85,28 @@ canvas {
     margin-top: 0.25em;
 }
 
-#languageMenuHeading {
-    display: none;
+#languageMenu h2 {
+    display: inline;
+    font-size: 1.2em;
+}
+
+#languageMenu img {
+    width: 1.1em;
+    height: 1.1em;
+    margin-right: 0.5em;
+    padding-bottom: 0.25em;
+}
+
+#languageMenu ul {
+    list-style: none inside;
+    padding: 0 0 0 1.75em;
+    margin-top: 0.5em
+}
+
+#languageMenu a {
+     text-align: left;
+ }
+
+#languageMenu li a:hover {
+    text-decoration: underline;
 }

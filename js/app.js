@@ -17,10 +17,14 @@ function main() {
                         {selector: '#btnRandom img', attribute: 'title', value: 'Refresh with a random automaton'},
                         {selector: '#btnSave img', attribute: 'alt', value: 'Save'},
                         {selector: '#btnSave img', attribute: 'title', value: 'Save the image'},
+                        {selector: '#btnLanguage img', attribute: 'title', value: 'Change language'},
                         {selector: '#btnFullScreen img', attribute: 'alt', value: 'Full screen'},
                         {selector: '#btnFullScreen img', attribute: 'title', value: 'Display in full screen'},
                         {selector: '#btnExitFullScreen img', attribute: 'alt', value: 'Exit full screen'},
-                        {selector: '#btnExitFullScreen img', attribute: 'title', value: 'Exit from full screen'}
+                        {selector: '#btnExitFullScreen img', attribute: 'title', value: 'Exit from full screen'},
+                        {selector: '#languageMenuHeading', content: 'Languages'},
+                        {selector: '.btnBack img', attribute: 'alt', value: 'Back'},
+                        {selector: '.btnBack img', attribute: 'title', value: 'Back to the main menu'}
                     ]
                 },
                 {
@@ -35,10 +39,14 @@ function main() {
                         {selector: '#btnRandom img', attribute: 'title', value: 'Cynhyrchu delwedd newydd gan ddefnyddio awtomaton ar hap' },
                         {selector: '#btnSave img', attribute: 'alt', value: 'Arbed'},
                         {selector: '#btnSave img', attribute: 'title', value: 'Arbed y ddelwedd'},
+                        {selector: '#btnLanguage img', attribute: 'title', value: 'Newid iaith'},
                         {selector: '#btnFullScreen img', attribute: 'alt', value: 'Sgrin llawn'},
                         {selector: '#btnFullScreen img', attribute: 'title', value: 'Dangos mewn sgrin llawn'},
                         {selector: '#btnExitFullScreen img', attribute: 'alt', value: 'Gadael sgrin llawn'},
-                        {selector: '#btnExitFullScreen img', attribute: 'title', value: 'Gadael sgrin llawn'}
+                        {selector: '#btnExitFullScreen img', attribute: 'title', value: 'Gadael sgrin llawn'},
+                        {selector: '#languageMenuHeading', content: 'Ieithoedd'},
+                        {selector: '.btnBack img', attribute: 'alt', value: 'Yn ôl'},
+                        {selector: '.btnBack img', attribute: 'title', value: 'Yn ôl i\'r brif ddewislen'}
                     ]
                 }
             ];
@@ -67,7 +75,13 @@ function main() {
             const translation = this._translations.find(x => x.lang === languageCode) || this._translations[0];
 
             translation.texts.forEach(t => {
-                $(t.selector).attr(t.attribute, t.value);
+                if (typeof t.attribute !== 'undefined') {
+                    $(t.selector).attr(t.attribute, t.value);
+                }
+                if (typeof t.content !== 'undefined') {
+                    $(t.selector).text(t.content);
+                }
+
             });
 
             // Set alternate languages
@@ -315,6 +329,16 @@ function main() {
         lang = localisation.getValidLanguageOrDefault(langWanted);
         localisation.setLanguage(lang);
         updateButtonStatus();
+        evt.preventDefault();
+    });
+    $('#btnLanguage').on('click', function (evt) {
+        $('#mainMenu').hide();
+        $('#languageMenu').show();
+        evt.preventDefault();
+    });
+    $('.btnBack').on('click', function (evt) {
+        $(this).parent().hide();
+        $('#mainMenu').show();
         evt.preventDefault();
     });
 

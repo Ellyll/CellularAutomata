@@ -1,4 +1,4 @@
-# CellularAutomata
+# Cellular Automata
 Web app for displaying one-dimensional cellular automata, lets you animate and also save an image.
 
 The rules are from [The Wolfram Atlas](http://atlas.wolfram.com/TOC/TOC_200.html)
@@ -10,10 +10,10 @@ There are Twitter bots that post images on:
 * [@CellularAuto](https://twitter.com/CellularAuto) - English
 * [@AwtomataCellog](https://twitter.com/AwtomataCellog) - Cymraeg (Welsh)
 
+Icons are based on those from [Gemoicons](http://geomicons.com/) and [Language Icon](http://www.languageicon.org/), thanks!
+
 ## TODO:
-* add links to http://atlas.wolfram.com
-* add info/about
-* add languages/localisation
+* add info/about, including links to http://atlas.wolfram.com
 * add share icon/functionality
-* add option to choose rule etc. ?
+* add options to choose rule etc. ?
 * tidy up code
