@@ -20,6 +20,7 @@
                         <li><a id="btnPause" role="button"><img src="img/pause_light.svg" alt="Pause" title="Pause" /></a></li>
                         <li><a id="btnRandom" role="button"><img src="img/refresh_light.svg" alt="Random" title="Refresh with a random automaton" /></a></li>
                         <li><a id="btnSave" href="" href-lang="image/png" download="CellularAutomaton.png" title="Save"><img src="img/save_light.svg" alt="Save" title="Save the image" /></a></li>
+                        <li><a id="btnAbout" role="button"><img src="img/about_light.svg" alt="About" title="About" /></a></li>
                         <li><a id="btnLanguage" role="button"><img src="img/languageIcon_light.svg" height="32" width="32" alt="Change language" title="Change language"></a></li>
                         <li><a id="btnFullScreen"><img src="img/fullscreen_light.svg" alt="Full screen" title="Display in full screen" /></a></li>
                         <li><a id="btnExitFullScreen"><img src="img/exitFullscreen_light.svg" alt="Exit full screen" title="Exit from full screen" /></a></li>
@@ -41,10 +42,15 @@
                     -->
                 </form>
             </div>
-            <div id="languageMenu" style="display: none">
+            <div id="languageMenu" class="subMenu" style="display: none">
                 <a class="btnBack"><img src="img/chevronLeft_light.svg" alt="Back" title="Back to the main menu" /><h2 id="languageMenuHeading">Languages</h2></a>
                 <ul class="languageChoices">
                 </ul>
+            </div>
+            <div id="aboutMenu" class="subMenu" style="display: none">
+                <a class="btnBack"><img src="img/chevronLeft_light.svg" alt="Back" title="Back to the main menu" /><h2 id="aboutMenuHeading">About</h2></a>
+                <div id="aboutMenuContent">
+                </div>
             </div>
         </div>
         <script src="js/lib/jquery-3.1.1.min.js"></script>
