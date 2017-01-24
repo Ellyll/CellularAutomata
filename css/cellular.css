@@ -85,6 +85,29 @@ canvas {
     margin-top: 0.25em;
 }
 
+.rulesRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0.5em;
+}
+
+.rulesRow li:first-child {
+    margin-left: 1em;
+}
+.rulesRow li:not(:first-child) {
+    margin-left: 0.25em;
+}
+
+#rule {
+    width: 3em;
+}
+
+#btnGo {
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
 #languageMenu h2 {
     display: inline;
     font-size: 1.2em;
@@ -100,7 +123,7 @@ canvas {
 #languageMenu ul {
     list-style: none inside;
     padding: 0 0 0 1.75em;
-    margin-top: 0.5em
+    margin-top: 0.5em;
 }
 
 #languageMenu a {

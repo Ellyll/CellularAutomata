@@ -24,7 +24,10 @@ function main() {
                         {selector: '#btnExitFullScreen img', attribute: 'title', value: 'Exit from full screen'},
                         {selector: '#languageMenuHeading', content: 'Languages'},
                         {selector: '.btnBack img', attribute: 'alt', value: 'Back'},
-                        {selector: '.btnBack img', attribute: 'title', value: 'Back to the main menu'}
+                        {selector: '.btnBack img', attribute: 'title', value: 'Back to the main menu'},
+                        {selector: '#ruleLabel', content: 'Rule (0-255):'},
+                        {selector: '#btnGo', content: 'Go'},
+                        {textId: 'INVALID_RULE', value: 'Invalid rule'}
                     ]
                 },
                 {
@@ -46,7 +49,10 @@ function main() {
                         {selector: '#btnExitFullScreen img', attribute: 'title', value: 'Gadael sgrin llawn'},
                         {selector: '#languageMenuHeading', content: 'Ieithoedd'},
                         {selector: '.btnBack img', attribute: 'alt', value: 'Yn ôl'},
-                        {selector: '.btnBack img', attribute: 'title', value: 'Yn ôl i\'r brif ddewislen'}
+                        {selector: '.btnBack img', attribute: 'title', value: 'Yn ôl i\'r brif ddewislen'},
+                        {selector: '#ruleLabel', content: 'Rheol (0-255):'},
+                        {selector: '#btnGo', content: 'Mynd'},
+                        {textId: 'INVALID_RULE', value: 'Rheol annilys'}
                     ]
                 }
             ];
@@ -71,6 +77,11 @@ function main() {
             return this.isValidLanguage(languageCode) ? languageCode : this.getDefaultLanguage();
         }
 
+        getText(languageCode, textId) {
+            const translation = this._translations.find(x => x.lang === languageCode) || this._translations[0];
+            return translation.texts.find(x => x.textId === textId).value;
+        }
+
         setLanguage(languageCode) {
             const translation = this._translations.find(x => x.lang === languageCode) || this._translations[0];
 
@@ -81,7 +92,6 @@ function main() {
                 if (typeof t.content !== 'undefined') {
                     $(t.selector).text(t.content);
                 }
-
             });
 
             // Set alternate languages
@@ -212,6 +222,17 @@ function main() {
             this.draw();
         }
 
+        setRule(ruleId) {
+            this._running = false;
+            this._lastTime = undefined;
+            this._initialRuleId = ruleId;
+            this._rows = cellular.getInitialisedRows(this._initialRuleId, this._initialHexValue, this._numberOfColumns, this._numberOfRows);
+            this._running = false;
+            this._firstTime = true;
+            this._yOffset = 0;
+            this.draw();
+        }
+
         start() {
             if (this._running) return; // already started
             this._running = true;
@@ -274,16 +295,12 @@ function main() {
     $initialValue.change(function() {
         const value = $(this).val();
         const isEnabled = cellular.isValidInitialValue(numberOfColumns, value);
-        $('#goButton').prop('disabled', !isEnabled);
+        $('#btnGo').prop('disabled', !isEnabled);
     });
     const $rule = $('#rule');
-    const rules = cellular.getRules();
     const ruleId = cellular.getRuleIdFromQueryStringOrDefault(qsRule, (rules) => cellular.getRandomRule().id);
-    $.each(rules, function(index, rule) {
-        const obj = { value: rule.id, text: rule.id };
-        if (rule.id === ruleId) obj.selected = 'selected';
-        $rule.append($('<option />', obj));
-    });
+    $rule.val(ruleId);
+
 
     const menu = new Menu($('#menu'));
     const app = new CellularApp(window, context, numberOfColumns, ruleId, hex, menu);
@@ -301,18 +318,18 @@ function main() {
         hideButton.hide();
     };
 
-    // $('#btnGo').on('click', function (evt) {
-    //     const rule = $rule.val().trim();
-    //     if (cellular.isValidRuleId(rule)) {
-    //         app.setRule(rule);
-    //         $initialValue.val(app.getInitialHexValue());
-    //         $rule.val(app.getInitialRuleId());
-    //         updateButtonStatus();
-    //     } else {
-    //         alert('INVALID RULE');
-    //     }
-    //     evt.preventDefault();
-    // });
+    $('#btnGo').on('click', function (evt) {
+        const rule = parseInt($rule.val().trim());
+        if (cellular.isValidRuleId(rule)) {
+            app.setRule(rule);
+            $initialValue.val(app.getInitialHexValue());
+            $rule.val(app.getInitialRuleId());
+            updateButtonStatus();
+        } else {
+            alert(localisation.getText(lang, 'INVALID_RULE'));
+        }
+        evt.preventDefault();
+    });
 
     $('#btnPlay').on('click', function (evt) {
         app.start();
