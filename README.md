@@ -13,7 +13,7 @@ There are Twitter bots that post images on:
 Icons are based on those from [Gemoicons](http://geomicons.com/) and [Language Icon](http://www.languageicon.org/), thanks!
 
 ## TODO:
-* add info/about, including links to http://atlas.wolfram.com
+* add info, including links to the rules to http://atlas.wolfram.com
 * add share icon/functionality
-* add options to choose rule etc. ?
 * tidy up code
+* make work on IE11 and/or Edge
