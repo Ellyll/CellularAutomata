@@ -397,6 +397,8 @@ function main() {
         lang = localisation.getValidLanguageOrDefault(langWanted);
         localisation.setLanguage(lang);
         updateButtonStatus();
+        $('#languageMenu').hide();
+        $('#mainMenu').show();
         evt.preventDefault();
     });
     $('#btnLanguage').on('click', function (evt) {
