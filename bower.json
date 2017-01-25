@@ -1,0 +1,21 @@
+{
+  "name": "CellularAutomata",
+  "homepage": "https://github.com/Ellyll/CellularAutomata",
+  "authors": [
+    "Ellyll <ellyll@yahoo.com>"
+  ],
+  "description": "1-dimensional cellular automata",
+  "main": "js/app.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1"
+  }
+}
