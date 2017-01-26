@@ -1,5 +1,5 @@
 // Support for full screen, created with information from: https://www.sitepoint.com/use-html5-full-screen-api/
-const fullscreen = (() => {
+define(function() {
     return {
         isSupported: () => {
             return document.fullscreenEnabled ||
@@ -50,4 +50,4 @@ const fullscreen = (() => {
             document.addEventListener("MSFullscreenChange", handleFullScreenChange);
         }
     };
-})();
+});

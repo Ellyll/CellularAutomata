@@ -1,4 +1,4 @@
-const cellular = (function() {
+define(function() {
     const inputs =[
         [1, 1, 1],
         [1, 1, 0],
@@ -179,10 +179,10 @@ const cellular = (function() {
         if (numberOfRows <= 0) {
             throw new RangeError('NumberOfRows must be greater than zero');
         }
-        if (!cellular.isValidRuleId(ruleId)) {
+        if (!isValidRuleId(ruleId)) {
             throw new Error('Invalid rule id');
         }
-        if (!cellular.isValidInitialValue(numberOfColumns, initialHexValue)) {
+        if (!isValidInitialValue(numberOfColumns, initialHexValue)) {
             throw new Error('Invalid initial hex value');
         }
 
@@ -218,4 +218,4 @@ const cellular = (function() {
         getRuleIdFromQueryStringOrDefault,
         getInitialisedRows
     };
-})();
+});
