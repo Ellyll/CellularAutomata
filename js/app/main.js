@@ -10,7 +10,7 @@ requirejs(['app/cellular', 'app/localisation', 'app/menu', 'app/fullscreen', 'ap
         const params = new URLSearchParams(location.search.slice(1));
         const qsInitialValue = params.get('initialValue');
         const qsRule = params.get('rule');
-        let lang = localisation.getValidLanguageOrDefault(params.get('lang'));
+        let currentLanguageCode = localisation.getValidLanguageOrDefault(params.get('lang'));
         const initialRow = cellular.getRowFromQueryStringOrDefault(qsInitialValue, numberOfColumns, (n) => cellular.generateRandomRow(n));
         const hex = cellular.convertRowToHex(initialRow);
         const $initialValue = $('#initialValue');
@@ -27,18 +27,18 @@ requirejs(['app/cellular', 'app/localisation', 'app/menu', 'app/fullscreen', 'ap
 
         const menu = new Menu($('#menu'));
         const app = new CellularApp(window, context, numberOfColumns, ruleId, hex, menu, cellular);
-        localisation.setLanguage(lang);
+        localisation.setLanguage(currentLanguageCode);
         localisation.setLanguageLinks();
-        window.history.pushState({}, document.title, `?lang=${lang}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
+        window.history.pushState({}, document.title, `?lang=${currentLanguageCode}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
 
         const updateButtonStatus = () => {
-            window.history.replaceState({}, document.title, `?lang=${lang}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
+            window.history.replaceState({}, document.title, `?lang=${currentLanguageCode}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
             const playButton = $('#btnPlay');
             const pauseButton = $('#btnPause');
-            const showButton = app.isRunning() ? pauseButton : playButton;
-            const hideButton = app.isRunning() ? playButton : pauseButton;
-            showButton.show();
-            hideButton.hide();
+            const buttonToShow = app.isRunning() ? pauseButton : playButton;
+            const buttonToHide = app.isRunning() ? playButton : pauseButton;
+            buttonToShow.show();
+            buttonToHide.hide();
         };
 
         // Buttons and links
@@ -50,7 +50,7 @@ requirejs(['app/cellular', 'app/localisation', 'app/menu', 'app/fullscreen', 'ap
                 $rule.val(app.getInitialRuleId());
                 updateButtonStatus();
             } else {
-                alert(localisation.getText(lang, 'INVALID_RULE'));
+                alert(localisation.getText(currentLanguageCode, 'INVALID_RULE'));
             }
             evt.preventDefault();
         });
@@ -84,8 +84,8 @@ requirejs(['app/cellular', 'app/localisation', 'app/menu', 'app/fullscreen', 'ap
         });
         $('.languageChoice').on('click', function (evt) {
             const langWanted = $(this).data('lang');
-            lang = localisation.getValidLanguageOrDefault(langWanted);
-            localisation.setLanguage(lang);
+            currentLanguageCode = localisation.getValidLanguageOrDefault(langWanted);
+            localisation.setLanguage(currentLanguageCode);
             updateButtonStatus();
             $('#languageMenu').hide();
             $('#mainMenu').show();
