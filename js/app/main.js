@@ -50,6 +50,10 @@ requirejs(['app/cellular', 'app/localisation', 'app/menu', 'app/fullscreen', 'ap
             updateButtonStatus();
         }
 
+        $(document).on('mousemove', function() {
+            app.setMenu(app.getMenu().activate());
+        });
+
         // Buttons and links
         $('#btnGo').on('click', function (evt) {
             const rule = parseInt($rule.val().trim());

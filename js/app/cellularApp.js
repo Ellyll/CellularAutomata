@@ -17,13 +17,15 @@ define(function() {
             this._cellular = cellular;
 
             this.resize();
-
-            const that = this;
-            $(document).on('mousemove', function() {
-                that._menu = that._menu.activate();
-            });
-
             this.tick();
+        }
+
+        getMenu() {
+            return this._menu;
+        }
+
+        setMenu(menu) {
+            this._menu = menu;
         }
 
         getInitialRuleId() {
