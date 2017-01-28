@@ -10,6 +10,7 @@ requirejs(['app/cellular', 'app/localisation', 'app/menu', 'app/fullscreen', 'ap
         const params = new URLSearchParams(location.search.slice(1));
         const qsInitialValue = params.get('initialValue');
         const qsRule = params.get('rule');
+        const play = params.get('play') === 'true';
         let currentLanguageCode = localisation.getValidLanguageOrDefault(params.get('lang'));
         const initialRow = cellular.getRowFromQueryStringOrDefault(qsInitialValue, numberOfColumns, (n) => cellular.generateRandomRow(n));
         const hex = cellular.convertRowToHex(initialRow);
@@ -32,7 +33,10 @@ requirejs(['app/cellular', 'app/localisation', 'app/menu', 'app/fullscreen', 'ap
         window.history.pushState({}, document.title, `?lang=${currentLanguageCode}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
 
         const updateButtonStatus = () => {
-            window.history.replaceState({}, document.title, `?lang=${currentLanguageCode}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`);
+            let url = `?lang=${currentLanguageCode}&rule=${app.getInitialRuleId()}&initialValue=${app.getCurrentHexValue()}`;
+            if (app.isRunning())
+                url += `&play=true`;
+            window.history.replaceState({}, document.title, url);
             const playButton = $('#btnPlay');
             const pauseButton = $('#btnPause');
             const buttonToShow = app.isRunning() ? pauseButton : playButton;
@@ -40,6 +44,11 @@ requirejs(['app/cellular', 'app/localisation', 'app/menu', 'app/fullscreen', 'ap
             buttonToShow.show();
             buttonToHide.hide();
         };
+
+        if (play) {
+            app.start();
+            updateButtonStatus();
+        }
 
         // Buttons and links
         $('#btnGo').on('click', function (evt) {
